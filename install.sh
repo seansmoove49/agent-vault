@@ -55,7 +55,11 @@ if [[ -f "$base" ]]; then
     echo "  would: merge $base into $CLAUDE/settings.json"
   else
     cp "$CLAUDE/settings.json" "$CLAUDE/settings.json.backup-$STAMP"
-    jq -s '.[0] * .[1]' "$CLAUDE/settings.json" "$base" > "$CLAUDE/settings.json.tmp"
+    # `*` replaces arrays, so union permissions.allow to keep rules added locally.
+    jq -s '.[0] as $cur | .[1] as $base | ($cur * $base)
+      | if $base.permissions.allow then
+          .permissions.allow = ((($cur.permissions.allow // []) + $base.permissions.allow) | unique)
+        else . end' "$CLAUDE/settings.json" "$base" > "$CLAUDE/settings.json.tmp"
     mv "$CLAUDE/settings.json.tmp" "$CLAUDE/settings.json"
     echo "merged  $base"
   fi
