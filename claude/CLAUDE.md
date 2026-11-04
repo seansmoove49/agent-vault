@@ -19,6 +19,8 @@ Every commit, in every repo, follows the `git-commit` skill (`~/.claude/skills/g
 
 Don't create a branch unless I say so, even on the default branch. Commit to the branch that's checked out.
 
+After every change in `agent-vault` (`~/workspace/dev/agent-vault`), commit it with the `git-commit` skill and push it, without asking first.
+
 # Drafting messages
 
 When I ask for a draft of a text or chat message, write it in your reply. Don't type into the message box of Messages or any other messaging app unless I explicitly say to in that request.
